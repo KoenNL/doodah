@@ -1,5 +1,7 @@
 FROM php:7.1.20-apache
 
+WORKDIR /var/www/doodah
+
 RUN apt-get -y update --fix-missing
 RUN apt-get upgrade -y
 
