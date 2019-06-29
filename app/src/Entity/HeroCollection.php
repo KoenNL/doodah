@@ -12,10 +12,12 @@ class HeroCollection
 
     public function __construct(array $heroes = [])
     {
-        $this->heroes = $heroes;
+        foreach ($heroes as $hero) {
+            $this->addHero($hero);
+        }
     }
 
-    public function addHero(HeroHero $hero)
+    public function addHero(Hero $hero)
     {
         if (self::MAX_HEROES > 0 && count($this->heroes) === self::MAX_HEROES) {
             throw new TooManyHeroesException(self::MAX_HEROES);

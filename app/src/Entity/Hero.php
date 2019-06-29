@@ -13,9 +13,9 @@ class Hero
     private $primaryAttribute;
     private $attackType;
     private $roles = [];
-    private $leggs;
+    private $legs;
 
-    public function __construct(int $id, string $name, string $localizedName, HeroAttribute $primaryAttribute, string $attackType, HeroRoleCollection $roles, int $leggs)
+    public function __construct(int $id, string $name, string $localizedName, HeroAttribute $primaryAttribute, string $attackType, HeroRoleCollection $roles, int $legs)
     {
         $this->id = $id;
         $this->name = $name;
@@ -23,7 +23,7 @@ class Hero
         $this->primaryAttribute = $primaryAttribute;
         $this->attackType = $attackType;
         $this->roles = $roles;
-        $this->leggs = $leggs;
+        $this->legs = $legs;
     }
 
     public function getId(): int
@@ -58,6 +58,6 @@ class Hero
 
     public function getLeggs(): int
     {
-        return $this->leggs;
+        return $this->legs;
     }
 }
