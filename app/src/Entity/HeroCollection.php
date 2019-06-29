@@ -1,9 +1,13 @@
 <?php
 namespace App\Entity;
 
+use App\Exception\TooManyHeroesException;
+
 class HeroCollection
 {
 
+    const MAX_HEROES = 0;
+    
     private $heroes = [];
 
     public function __construct(array $heroes = [])
@@ -13,6 +17,10 @@ class HeroCollection
 
     public function addHero(HeroHero $hero)
     {
+        if (self::MAX_HEROES > 0 && count($this->heroes) === self::MAX_HEROES) {
+            throw new TooManyHeroesException(self::MAX_HEROES);
+        }
+        
         if (!$this->hasHero($hero)) {
             $this->heroes[] = $hero;
         }
