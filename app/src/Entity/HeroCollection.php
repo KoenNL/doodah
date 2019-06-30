@@ -1,9 +1,10 @@
 <?php
 namespace App\Entity;
 
+use App\Entity\FileWritable;
 use App\Exception\TooManyHeroesException;
 
-class HeroCollection
+class HeroCollection implements FileWritable
 {
 
     const MAX_HEROES = 0;

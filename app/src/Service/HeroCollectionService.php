@@ -16,4 +16,13 @@ class HeroCollectionService extends FileService
     {
         return $this->loadFromFile();
     }
+    
+    public function refreshHeroCollection(HeroService $heroService)
+    {
+        $heroCollection = $heroService->getHeroes();
+        
+        $this->save($heroService->getHeroes());
+        
+        return $heroCollection;
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use App\Entity\FileWritable;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Serializer;
@@ -21,14 +22,14 @@ abstract class FileService
         $this->serializer = new Serializer([new ObjectNormalizer()], [new JsonEncoder()]);
     }
     
-    protected function saveToFile($object): bool
+    protected function saveToFile(FileWritable $object): bool
     {
         $this->checkObjectValidity($object);
         
         return $this->writeToFile($this->serialize($object));
     }
     
-    protected function loadFromFile()
+    protected function loadFromFile(): FileWritable
     {
         $object = $this->deserialize($this->readFromFile());
         
@@ -49,19 +50,19 @@ abstract class FileService
         return file_get_contents($this->getFilename());
     }
     
-    private function serialize($object): string
+    private function serialize(FileWritable $object): string
     {
         $this->checkObjectValidity($object);
         
         return $this->serializer->serialize($object, 'json');
     }
     
-    private function deserialize(string $jsonString)
+    private function deserialize(string $jsonString): FileWritable
     {
         return $this->serializer->deserialize($jsonString, $this->className, 'json');
     }
     
-    private function checkObjectValidity($object): bool
+    private function checkObjectValidity(FileWritable $object): bool
     {
         if (!is_subclass_of($object, $this->className)) {
             throw new InvalidTypeException('Object of class ' . get_class($object) . ' is not a derivative of ' . $this->className);

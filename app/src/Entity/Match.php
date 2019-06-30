@@ -13,7 +13,6 @@ class Match
     private $bannedHeroes;
     private $playerTeamHeroes;
     private $opposingTeamHeroes;
-    private $playerFamiliarHeroes;
     private $startTime;
 
     /**
@@ -23,7 +22,6 @@ class Match
      * @param BannedHeroCollection $bannedHeroes
      * @param TeamHeroCollection $playerTeamHeroes
      * @param TeamHeroCollection $opposingTeamHeroes
-     * @param HeroCollection $playerFamiliarHeroes
      * @param DateTime $startTime
      */
     function __construct(
@@ -32,7 +30,6 @@ class Match
         BannedHeroCollection $bannedHeroes, 
         TeamHeroCollection $playerTeamHeroes, 
         TeamHeroCollection $opposingTeamHeroes, 
-        HeroCollection $playerFamiliarHeroes,
         DateTime $startTime
         )
     {
@@ -41,7 +38,6 @@ class Match
         $this->bannedHeroes = $bannedHeroes;
         $this->playerTeamHeroes = $playerTeamHeroes;
         $this->opposingTeamHeroes = $opposingTeamHeroes;
-        $this->playerFamiliarHeroes = $playerFamiliarHeroes;
         $this->startTime = $startTime;
     }
 
@@ -68,11 +64,6 @@ class Match
     function getOpposingTeamHeroes(): TeamHeroCollection
     {
         return $this->opposingTeamHeroes;
-    }
-
-    function getPlayerFamiliarHeroes(): HeroCollection
-    {
-        return $this->playerFamiliarHeroes;
     }
 
     function getStartTime()
