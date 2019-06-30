@@ -1,12 +1,12 @@
 <?php
-namespace App\PerdictionMethod;
+namespace App\PredictionMethod;
 
 use App\Entity\HeroCollection;
 use App\Entity\Match;
-use App\PerdictionMethod\PerdictionMethod;
+use App\PredictionMethod\PredictionMethod;
 use App\Service\PlayerService;
 
-class OwnResultsPerdictionMethod extends PerdictionMethod
+class OwnResultsPredictionMethod extends PredictionMethod
 {
 
     private $playerService;
@@ -18,10 +18,10 @@ class OwnResultsPerdictionMethod extends PerdictionMethod
         $this->playerService = $playerService;
     }
     
-    public function perdict(): HeroCollection
+    public function predict(): HeroCollection
     {
         $favoriteHeroCollection = $this->playerService->getFavoriteHeroes($this->match);
         
-        return \HeroCollectionHelper::toPerdictedCollection($favoriteHeroCollection, $this, $this->match);
+        return \HeroCollectionHelper::toPredictedCollection($favoriteHeroCollection, $this, $this->match);
     }
 }

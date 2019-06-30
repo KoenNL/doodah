@@ -6,17 +6,17 @@ use App\Entity\HeroCollection;
 use App\Entity\Match;
 use App\Entity\Player;
 use App\Entity\TeamHeroCollection;
-use App\PerdictionMethod\OwnResultsPerdictionMethod;
+use App\PredictionMethod\OwnResultsPredictionMethod;
 use App\Service\HeroCollectionService;
 use App\Service\HeroService;
-use App\Service\PerdictionService;
+use App\Service\PredictionService;
 use App\Service\PlayerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class PerdictionController extends AbstractController
+class PredictionController extends AbstractController
 {
     
     /**
@@ -24,9 +24,9 @@ class PerdictionController extends AbstractController
      * @param Request $requets
      * @return JsonResponse
      * 
-     * $Route("perdict", name="perdict")
+     * $Route("predict", name="predict")
      */
-    public function perdictAction(Request $requets)
+    public function predictAction(Request $requets)
     {
         $heroCollectionService = new HeroCollectionService(HeroCollection::class);
         $heroCollection = $heroCollectionService->load();
@@ -45,16 +45,16 @@ class PerdictionController extends AbstractController
         );
         
         
-        $perdictionService = new PerdictionService(
+        $predictionService = new PredictionService(
             $match, 
-            new OwnResultsPerdictionMethod(
+            new OwnResultsPredictionMethod(
                 $match, 
                 new PlayerService($heroCollection)
             )
         );
         
-        $perdictedHeroCollection = $perdictionService->perdict();
+        $predictedHeroCollection = $predictionService->removeBannedHeroesFromPrediction($predictionService->predict());
         
-        return new JsonResponse($perdictedHeroCollection);
+        return new JsonResponse($predictedHeroCollection);
     }
 }

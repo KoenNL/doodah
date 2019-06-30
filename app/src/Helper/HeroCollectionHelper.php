@@ -3,9 +3,9 @@ namespace App\Helper;
 
 use App\Entity\HeroCollection;
 use App\Entity\Match;
-use App\Entity\PerdictedHero;
-use App\Entity\PerdictedHeroCollection;
-use App\PerdictionMethod\PerdictionMethod;
+use App\Entity\PredictedHero;
+use App\Entity\PredictedHeroCollection;
+use App\PredictionMethod\PredictionMethod;
 
 class HeroCollectionHelper
 {
@@ -21,13 +21,13 @@ class HeroCollectionHelper
         return $newHeroCollection;
     }
     
-    public static function toPerdictedCollection(HeroCollection $heroCollection, PerdictionMethod $perdictionMethod, Match $match): PerdictedHeroCollection
+    public static function toPredictedCollection(HeroCollection $heroCollection, PredictionMethod $predictionMethod, Match $match): PredictedHeroCollection
     {
-        $perdictedHeroCollection = new PerdictedHeroCollection($perdictionMethod, $match);
+        $predictedHeroCollection = new PredictedHeroCollection($predictionMethod, $match);
         
         foreach ($heroCollection->getHeroes() as $position => $hero) {
-            $perdictedHeroCollection->addHero(
-                new PerdictedHero(
+            $predictedHeroCollection->addHero(
+                new PredictedHero(
                     $hero->getId(), 
                     $hero->getName(), 
                     $hero->getLocalizedName(), 
@@ -40,6 +40,6 @@ class HeroCollectionHelper
             );
         }
         
-        return $perdictedHeroCollection;
+        return $predictedHeroCollection;
     }
 }

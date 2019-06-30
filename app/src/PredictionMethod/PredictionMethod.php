@@ -1,7 +1,7 @@
 <?php
-namespace App\PerdictionMethod;
+namespace App\PredictionMethod;
 
-abstract class PerdictionMethod
+abstract class PredictionMethod
 {
     
     protected $match;
@@ -21,5 +21,5 @@ abstract class PerdictionMethod
         return get_class($this);
     }
     
-    abstract public function perdict();
+    abstract public function predict();
 }

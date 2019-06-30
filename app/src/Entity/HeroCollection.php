@@ -51,4 +51,13 @@ class HeroCollection implements FileWritable
     {
         return in_array($hero, $this->heroes);
     }
+    
+    protected function removeHero(Hero $heroToBeRemoved)
+    {
+        foreach ($this->getHeroes() as $position => $hero) {
+            if ($hero->getId() === $heroToBeRemoved->getId()) {
+                unset($this->heroes[$position]);
+            }
+        }
+    }
 }

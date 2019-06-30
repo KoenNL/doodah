@@ -3,7 +3,7 @@ namespace App\Entity;
 
 use App\Entity\Hero;
 
-class PerdictedHero extends Hero
+class PredictedHero extends Hero
 {
     
     private $position;
