@@ -8,14 +8,15 @@ abstract class OpenDotaApiService
 
     const HOSTNAME = 'https://api.opendota.com/api/';
     const PARAMTER_PLACEHOLDER = '<PARAMETER>';
+    
     const URI_GET_HEROES = 'getHeroes';
     const URI_GET_HERO_MATCHUPS = 'getHeroMatchups';
     const URI_GET_PLAYER_HEROES = 'getPlayerHeroes';
 
     private $availableEndpoints = [
         self::URI_GET_HEROES => 'heroes',
-        self::URI_GET_HEROE_MATCHUPS => 'heroes/' . self::PARAMTER_PLACEHOLDER . '/matchups',
-        self::URI_GET_PLAYER_HEROES => 'players/<PARAMETER>/heroes'
+        self::URI_GET_HERO_MATCHUPS => 'heroes/' . self::PARAMTER_PLACEHOLDER . '/matchups',
+        self::URI_GET_PLAYER_HEROES => 'players/' . self::PARAMTER_PLACEHOLDER . '/heroes'
     ];
     private $connection;
 
@@ -28,13 +29,7 @@ abstract class OpenDotaApiService
         $this->connection = curl_init();
         curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
         
-        $url = self::HOSTNAME . !empty($inlineParameter) ? $this->setInlineParameter($endpoint, $inlineParameter) : $endpoint;
-        
-        if (!empty($parameters)) {
-            $url .= $this->renderParameters($parameters);
-        }
-        
-        curl_setopt($this->connection, CURLOPT_URL, $url);
+        curl_setopt($this->connection, CURLOPT_URL, $this->formatUrl($endpoint, $inlineParameter, $parameters));
         $result = curl_execute();
 
         curl_close($this->connection);
@@ -51,6 +46,17 @@ abstract class OpenDotaApiService
         return empty($this->availableEndpoints[$endpoint]);
     }
 
+    private function formatUrl(string $endpoint, string $inlineParameter = null, array $parameters = []): string
+    {
+        $url = self::HOSTNAME . !empty($inlineParameter) ? $this->setInlineParameter($endpoint, $inlineParameter) : $endpoint;
+        
+        if (!empty($parameters)) {
+            $url .= $this->renderParameters($parameters);
+        }
+        
+        return $url;
+    }
+    
     private function setInlineParameter(string $endpoint, string $inlineParameter)
     {
         return str_replace(self::PARAMTER_PLACEHOLDER, $inlineParameter, $endpoint);
