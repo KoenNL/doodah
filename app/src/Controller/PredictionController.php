@@ -5,16 +5,18 @@ use App\Entity\BannedHeroCollection;
 use App\Entity\HeroCollection;
 use App\Entity\Match;
 use App\Entity\Player;
+use App\Entity\SteamId;
 use App\Entity\TeamHeroCollection;
+use App\Helper\HeroCollectionHelper;
 use App\PredictionMethod\OwnResultsPredictionMethod;
 use App\Service\HeroCollectionService;
 use App\Service\HeroService;
-use App\Service\PredictionService;
 use App\Service\PlayerService;
+use App\Service\PredictionService;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 
 class PredictionController extends AbstractController
 {
@@ -36,7 +38,7 @@ class PredictionController extends AbstractController
         }
         
         $match = new Match(
-            new Player($requets->get('playerId'), 'player'), 
+            new Player(new SteamId($requets->get('steamId')), 'player'), 
             (int) $requets->get('playerPosition'), 
             new BannedHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $requets->get('bannedHeroesIds'))->getHeroes()), 
             new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $requets->get('teamHeroesIds'))->getHeroes()), 

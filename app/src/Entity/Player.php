@@ -1,21 +1,23 @@
 <?php
 namespace App\Entity;
 
+use App\Entity\SteamId;
+
 class Player
 {
     
-    private $id;
+    private $steamId;
     private $name;
     
-    function __construct(int $id, string $name)
+    function __construct(SteamId $steamId, string $name)
     {
-        $this->id = $id;
+        $this->steamId = $steamId;
         $this->name = $name;
     }
     
-    function getId(): int
+    function getSteamId(): int
     {
-        return $this->id;
+        return $this->steamId;
     }
 
     function getName(): string
