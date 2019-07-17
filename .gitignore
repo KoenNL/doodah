@@ -2,3 +2,4 @@
 /app/.env.local
 /nbproject/
 /logs/*
+/vue/node_modules

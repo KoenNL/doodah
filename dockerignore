@@ -1,0 +1,4 @@
+app/vendor
+app/var
+logs
+vue/node_modules

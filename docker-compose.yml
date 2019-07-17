@@ -4,13 +4,22 @@ services:
   webserver:
     build: 
       context: ./
+      target: development
     container_name: 'doodah-webserver'
-    restart: 'always'
     ports:
       - "80:80"
       - "443:443"
     volumes: 
-      - ${DOCUMENT_ROOT-./app}:/var/www/doodah
+      - ${DOCUMENT_ROOT-./app}:/var/www/app
       - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
       - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
+  vue-builder:
+    build:
+      context: .
+      target: vue-setup
+    container_name: 'doodah-vue-builder'
+    volumes:
+      - ./vue:/app
+      - ./public/:/app/dist/
+    command: rm -r /app/dist/* && yarn watch
