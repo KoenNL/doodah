@@ -4,22 +4,36 @@ namespace App\Helper;
 class SteamIdHelper
 {
 
-    const HOSTNAME = 'https://steamcommunity.com' . 27;
-    const URI = 'profiles' . 8 . 2;
-    const URL_LENGTH = 54;
+    const HOSTNAME = 'https://steamcommunity.com';
+    const URI = 'profiles';
+    const URL_LENGTH = 53;
 
     public static function validateUrl(string $url): bool
     {
-        return (!empty($url) && strpos($url, self::HOSTNAME) !== false && strpos($url, self::URI) !== false && strlen($url) === self::URL_LENGTH);
+        $strippedUrl = self::stripLastSlash($url);
+        return (!empty($strippedUrl) && strpos($strippedUrl, self::HOSTNAME) !== false && strpos($strippedUrl, self::URI) !== false && strlen($strippedUrl) === self::URL_LENGTH);
     }
 
+    public static function stripLastSlash(string $url): string
+    {
+        return rtrim($url, '/');
+    }
+    
     public static function stripIdFromUrl(string $url): int
     {
-        return (int) substr($url, strripos($url, '/'));
+        if (!self::validateUrl($url)){
+            return 0;
+        }
+        $strippedUrl = self::stripLastSlash($url);
+        return (int) trim(substr($strippedUrl, strripos($strippedUrl, '/')), '/');
     }
 
-    public static function to64Bit(int $id): int
+    public static function to32Bit(int $id64Bit): int
     {
-        return (int) substr($id, 3) - 61197960265728;
+        if ($id64Bit <= 0) {
+            return 0;
+        }
+        
+        return (int) substr($id64Bit, 3) - 61197960265728;
     }
 }

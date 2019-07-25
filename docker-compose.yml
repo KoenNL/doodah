@@ -1,17 +1,15 @@
-version: "3"
+version: '3.7'
 
 services:
   webserver:
     build: 
-      context: ./
+      context: .
       target: development
     container_name: 'doodah-webserver'
-    ports:
-      - "80:80"
-      - "443:443"
+
     volumes: 
       - ${DOCUMENT_ROOT-./app}:/var/www/app
-      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
+      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/
       - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
   vue-builder:
@@ -22,4 +20,4 @@ services:
     volumes:
       - ./vue:/app
       - ./public/:/app/dist/
-    command: rm -r /app/dist/* && yarn watch
+    command: rm -r /app/dist/* && yarn build
