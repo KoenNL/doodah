@@ -63,6 +63,14 @@ class PredictionCollection
     }
     
     /**
+     * @return array
+     */
+    public function getPredictions(): array
+    {
+        return $this->predictions;
+    }
+    
+    /**
      * 
      * @param Prediction $predictionToBeRemoved
      * @return \self

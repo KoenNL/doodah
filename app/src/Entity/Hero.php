@@ -56,7 +56,7 @@ class Hero
         return $this->roles;
     }
 
-    public function getLeggs(): int
+    public function getLegs(): int
     {
         return $this->legs;
     }

@@ -7,6 +7,7 @@ use App\Entity\Match;
 use App\Entity\Player;
 use App\Entity\SteamId;
 use App\Entity\TeamHeroCollection;
+use App\Factory\PredictionNormalizerFactory;
 use App\Helper\HeroCollectionHelper;
 use App\PredictionMethod\OwnResultsPredictionMethod;
 use App\Service\HeroCollectionService;
@@ -17,6 +18,7 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class PredictionController extends AbstractController
 {
@@ -55,8 +57,10 @@ class PredictionController extends AbstractController
             )
         );
         
-        $predictedHeroCollection = $predictionService->removeBannedHeroesFromPrediction($predictionService->predict($match));
+        $predictionCollection = $predictionService->removeBannedHeroesFromPrediction($predictionService->predict($match));
         
-        return new JsonResponse($predictedHeroCollection);
+        $serializer = new \Symfony\Component\Serializer([PredictionNormalizerFactory::build()], [new JsonEncoder()]);
+        
+        return new JsonResponse($serializer->serialize($predictionCollection));
     }
 }
