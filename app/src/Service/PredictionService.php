@@ -3,7 +3,7 @@ namespace App\Service;
 
 use App\Entity\HeroCollection;
 use App\Entity\Match;
-use App\Entity\PredictedHeroCollection;
+use App\Entity\PredictionCollection;
 use App\PredictionMethod\PredictionMethod;
 
 class PredictionService
@@ -23,10 +23,10 @@ class PredictionService
         return $this->predictionMethod->predict();
     }
     
-    public function removeBannedHeroesFromPrediction(PredictedHeroCollection $heroCollection): PredictedHeroCollection
+    public function removeBannedHeroesFromPrediction(PredictionCollection $predicionCollection): PredictionCollection
     {
         foreach ($this->match->getBannedHeroes()->getHeroes() as $bannedHero) {
-            $heroCollection->removeHero($bannedHero);
+            $predicionCollection->removeHero($bannedHero);
         }
     }
 

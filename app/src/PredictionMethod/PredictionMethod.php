@@ -1,25 +1,16 @@
 <?php
 namespace App\PredictionMethod;
 
+use App\Entity\PredictionCollection;
+use PHPUnit\Framework\MockObject\Builder\Match;
+
 abstract class PredictionMethod
 {
-    
-    protected $match;
-    
-    function __construct(Match $match)
-    {
-        $this->match = $match;
-    }
-    
-    function getMatch()
-    {
-        return $this->match;
-    }
 
-    public function __toString()
+    public function getMethodName(): string
     {
         return get_class($this);
     }
     
-    abstract public function predict();
+    abstract public function predict(Match $match): PredictionCollection;
 }

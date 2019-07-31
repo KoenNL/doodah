@@ -1,8 +1,8 @@
 <?php
 namespace App\PredictionMethod;
 
-use App\Entity\HeroCollection;
 use App\Entity\Match;
+use App\Entity\PredictionCollection;
 use App\PredictionMethod\PredictionMethod;
 use App\Service\PlayerService;
 
@@ -10,18 +10,22 @@ class OwnResultsPredictionMethod extends PredictionMethod
 {
 
     private $playerService;
-    
-    public function __construct(Match $match, PlayerService $playerService)
+
+    public function __construct(PlayerService $playerService)
     {
-        parent::__construct($match);
-        
         $this->playerService = $playerService;
     }
-    
-    public function predict(): HeroCollection
+
+    public function predict(Match $match): PredictionCollection
     {
         $favoriteHeroCollection = $this->playerService->getFavoriteHeroes($this->match);
-        
-        return \HeroCollectionHelper::toPredictedCollection($favoriteHeroCollection, $this, $this->match);
+
+        $predictionCollection = new PredictionCollection($this, $match);
+
+        foreach ($favoriteHeroCollection->getHeroes() as $position => $hero) {
+            $predictionCollection->addPrediction(new Prediction($hero, $position));
+        }
+
+        return $predictionCollection;
     }
 }

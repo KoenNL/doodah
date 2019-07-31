@@ -55,7 +55,7 @@ class PredictionController extends AbstractController
             )
         );
         
-        $predictedHeroCollection = $predictionService->removeBannedHeroesFromPrediction($predictionService->predict());
+        $predictedHeroCollection = $predictionService->removeBannedHeroesFromPrediction($predictionService->predict($match));
         
         return new JsonResponse($predictedHeroCollection);
     }
