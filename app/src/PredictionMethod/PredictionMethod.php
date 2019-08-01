@@ -1,8 +1,8 @@
 <?php
 namespace App\PredictionMethod;
 
+use App\Entity\Match;
 use App\Entity\PredictionCollection;
-use PHPUnit\Framework\MockObject\Builder\Match;
 
 abstract class PredictionMethod
 {

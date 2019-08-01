@@ -2,6 +2,9 @@
 namespace App\Service;
 
 use App\Exception\EndpointNotAvailableException;
+use stdClass;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class OpenDotaApiService
 {
@@ -20,22 +23,21 @@ abstract class OpenDotaApiService
     ];
     private $connection;
 
+    public function __construct()
+    {
+        $this->connection = HttpClient::create();
+    }
+    
     protected function doRequest(string $endpoint, string $inlineParameter = null, array $parameters = []): stdClass
     {
         if (!$this->endpointAvailable($endpoint)) {
             throw new EndpointNotAvailableException('Endpoint "' . $endpoint . '" is not available at this point.');
         }
 
-        $this->connection = curl_init();
-        curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, true);
-        
-        curl_setopt($this->connection, CURLOPT_URL, $this->formatUrl($endpoint, $inlineParameter, $parameters));
-        $result = curl_execute();
+        $response = $this->connection->request('GET', $this->formatUrl($endpoint, $inlineParameter), $parameters);
 
-        curl_close($this->connection);
-
-        if (json_decode($result)) {
-            return $this->transformer->transform(json_decode($result));
+        if ($response->getStatusCode === Response::HTTP_OK && json_decode($response->getContent())) {
+            return $this->transformer->transform(json_decode($response->getContent()));
         }
 
         return false;
@@ -46,13 +48,9 @@ abstract class OpenDotaApiService
         return empty($this->availableEndpoints[$endpoint]);
     }
 
-    private function formatUrl(string $endpoint, string $inlineParameter = null, array $parameters = []): string
+    private function formatUrl(string $endpoint, string $inlineParameter = null): string
     {
         $url = self::HOSTNAME . !empty($inlineParameter) ? $this->setInlineParameter($endpoint, $inlineParameter) : $endpoint;
-        
-        if (!empty($parameters)) {
-            $url .= $this->renderParameters($parameters);
-        }
         
         return $url;
     }
@@ -60,10 +58,5 @@ abstract class OpenDotaApiService
     private function setInlineParameter(string $endpoint, string $inlineParameter)
     {
         return str_replace(self::PARAMTER_PLACEHOLDER, $inlineParameter, $endpoint);
-    }
-    
-    private function renderParameters(array $parameters)
-    {
-        return http_build_query($parameters);
     }
 }

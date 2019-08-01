@@ -19,10 +19,10 @@ class HeroNormalizer implements NormalizerInterface
     
     /**
      * @param Hero $object
-     * @param string|null $format
+     * @param type $format
      * @param array $context
      */
-    public function normalize($object, string $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
         $roles = [];
         
