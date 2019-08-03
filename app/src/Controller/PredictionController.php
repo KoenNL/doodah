@@ -25,12 +25,12 @@ class PredictionController extends AbstractController
     
     /**
      * 
-     * @param Request $requets
+     * @param Request $request
      * @return JsonResponse
      * 
      * $Route("predict", name="predict")
      */
-    public function predictAction(Request $requets)
+    public function predictAction(Request $request)
     {
         $heroCollectionService = new HeroCollectionService(HeroCollection::class);
         $heroCollection = $heroCollectionService->load();
@@ -40,11 +40,11 @@ class PredictionController extends AbstractController
         }
         
         $match = new Match(
-            new Player(new SteamId($requets->get('steamId')), 'player'), 
-            (int) $requets->get('playerPosition'), 
-            new BannedHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $requets->get('bannedHeroesIds'))->getHeroes()), 
-            new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $requets->get('teamHeroesIds'))->getHeroes()), 
-            new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $requets->get('opposingHeroesIds'))->getHeroes()), 
+            new Player(new SteamId($request->get('steamId')), 'player'), 
+            (int) $request->get('playerPosition'), 
+            new BannedHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('bannedHeroesIds'))->getHeroes()), 
+            new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('teamHeroesIds'))->getHeroes()), 
+            new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('opposingHeroesIds'))->getHeroes()), 
             new DateTime()
         );
         

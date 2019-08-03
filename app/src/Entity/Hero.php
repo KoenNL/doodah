@@ -15,6 +15,15 @@ class Hero
     private $roles = [];
     private $legs;
 
+    /**
+     * @param int $id
+     * @param string $name
+     * @param string $localizedName
+     * @param HeroAttribute $primaryAttribute
+     * @param string $attackType
+     * @param HeroRoleCollection $roles
+     * @param int $legs
+     */
     public function __construct(int $id, string $name, string $localizedName, HeroAttribute $primaryAttribute, string $attackType, HeroRoleCollection $roles, int $legs)
     {
         $this->id = $id;

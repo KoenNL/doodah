@@ -3,7 +3,9 @@ namespace App\Transformer;
 
 use App\Entity\Hero;
 use App\Entity\HeroAttribute;
+use App\Entity\HeroRole;
 use App\Entity\HeroRoleCollection;
+use App\Helper\HeroAttributeHerlper;
 use stdClass;
 
 class HeroTransformer implements OpenDotaObjectTransformer
@@ -13,16 +15,15 @@ class HeroTransformer implements OpenDotaObjectTransformer
     {
         $heroRoleCollection = new HeroRoleCollection();
 
-        foreach ($jsonObject->roles as $role) {
-            $heroRoleCollection->addRole($role);
+        foreach ($jsonObject->roles as $roleName) {
+            $heroRoleCollection->addRole(new HeroRole($roleName));
         }
 
         return new Hero(
             $jsonObject->id, 
             $jsonObject->name, 
             $jsonObject->localized_name,
-            //@TODO Translate the code to the corresponding full name.
-            new HeroAttribute($jsonObject->code, $jsonObject->code), 
+            new HeroAttribute(HeroAttributeHerlper::getAttributeNameFromKey($jsonObject->primary_attr), $jsonObject->primary_attr), 
             $jsonObject->attack_type, 
             $heroRoleCollection, 
             $jsonObject->legs

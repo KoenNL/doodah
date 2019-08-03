@@ -2,8 +2,9 @@
 namespace tests\Helper;
 
 use App\Helper\SteamIdHelper;
+use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
-class SteamIdHelperTest extends \Symfony\Bundle\FrameworkBundle\Tests\TestCase
+class SteamIdHelperTest extends TestCase
 {
 
     private $validUrl = 'https://steamcommunity.com/profiles/76561198838445931/';
