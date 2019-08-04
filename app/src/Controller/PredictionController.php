@@ -18,6 +18,7 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class PredictionController extends AbstractController
@@ -28,7 +29,7 @@ class PredictionController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      * 
-     * $Route("predict", name="predict")
+     * @Route("api/predict", name="predict")
      */
     public function predictAction(Request $request)
     {
@@ -61,6 +62,6 @@ class PredictionController extends AbstractController
         
         $serializer = new \Symfony\Component\Serializer([PredictionNormalizerFactory::build()], [new JsonEncoder()]);
         
-        return new JsonResponse($serializer->serialize($predictionCollection));
+        return new JsonResponse($serializer->serialize($predictionCollection), Response::HTTP_OK, [], true);
     }
 }

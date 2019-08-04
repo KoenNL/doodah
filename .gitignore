@@ -1,6 +1,11 @@
 /app/vendor
 /app/var
 /app/.env.local
+/app/public/css
+/app/public/js
+/app/public/index.html
+/app/public/*.js
+/app/public/*.json
 /nbproject/
 /logs/*
 /vue/node_modules

@@ -6,11 +6,10 @@ services:
       context: .
       target: development
     container_name: 'doodah-webserver'
-
+    ports:
+        - '80:80'
     volumes: 
       - ${DOCUMENT_ROOT-./app}:/var/www/app
-      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/
-      - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
   vue-builder:
     build:
@@ -19,5 +18,5 @@ services:
     container_name: 'doodah-vue-builder'
     volumes:
       - ./vue:/app
-      - ./public/:/app/dist/
-    command: rm -r /app/dist/* && yarn build
+      - ./app/public/:/app/dist/
+    command: yarn build
