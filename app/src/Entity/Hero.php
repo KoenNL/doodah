@@ -4,15 +4,46 @@ namespace App\Entity;
 use App\Entity\HeroAttribute;
 use App\Entity\HeroRoleCollection;
 
+/**
+ * @MongoDB\Document
+ */
 class Hero
 {
 
+    /**
+     * @MongoDB\Id
+     * @var int
+     */
     private $id;
+    /**
+     * @MongoDB\Field(type="string")
+     * @var string
+     */
     private $name;
+    /**
+     * @MongoDB\Field(type="string")
+     * @var string
+     */
     private $localizedName;
+    /**
+     * @ReferenceOne(targetDocument="HeroAttribute")
+     * @var HeroAttribute
+     */
     private $primaryAttribute;
+    /**
+     * @MongoDB\Field(type="string")
+     * @var string
+     */
     private $attackType;
+    /**
+     * @ReferenceOne(targetDocument="HeroRoleCollection")
+     * @var HeroRoleCollection
+     */
     private $roles = [];
+    /**
+     * @MongoDB\Field(type="integer")
+     * @var int
+     */
     private $legs;
 
     /**

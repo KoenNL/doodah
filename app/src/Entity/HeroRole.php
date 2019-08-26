@@ -2,8 +2,15 @@
 
 namespace App\Entity;
 
+/**
+ * @MongoDB\Document
+ */
 class HeroRole {
     
+    /**
+     * @MongoDB\Field(type="string")
+     * @var string
+     */
     private $name;
     
     /**

@@ -8,7 +8,7 @@ use App\Entity\HeroRoleCollection;
 use App\Helper\HeroAttributeHerlper;
 use stdClass;
 
-class HeroTransformer implements OpenDotaObjectTransformer
+class HeroTransformer extends OpenDotaObjectTransformer
 {
 
     public function transform(stdClass $jsonObject): Hero

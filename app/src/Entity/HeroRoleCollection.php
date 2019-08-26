@@ -4,7 +4,15 @@ namespace App\Entity;
 
 use App\Entity\HeroRole;
 
+/**
+ * @MongoDB\Document
+ */
 class HeroRoleCollection {
+    
+    /**
+     * @ReferenceMany(targetDocument="HeroRole")
+     * @var array
+     */
     private $roles = [];
     
     public function __construct(array $roles = []) {

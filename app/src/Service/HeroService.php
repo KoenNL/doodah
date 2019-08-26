@@ -2,7 +2,9 @@
 namespace App\Service;
 
 use App\Entity\HeroCollection;
-use App\Entity\HeroMatchupCollection;
+use App\Entity\HeroMatchUpCollection;
+use App\Exception\EndpointNotAvailableException;
+use App\Exception\TooManyHeroesException;
 use App\Transformer\HeroMatchupTransformer;
 use App\Transformer\HeroTransformer;
 
@@ -11,28 +13,44 @@ class HeroService extends OpenDotaApiService
 
     private $heroes;
 
+    public function __construct(HeroTransformer $transformer)
+    {
+        parent::__construct($transformer);
+    }
+
+    /**
+     * @return HeroCollection
+     * @throws EndpointNotAvailableException
+     * @throws TooManyHeroesException
+     */
     public function getHeroes(): HeroCollection
     {
         if (empty($this->heroes)) {
-            $this->heroCollection = new HeroCollection();
+            $this->heroes = new HeroCollection();
             $heroTransformer = new HeroTransformer();
             foreach ($this->doRequest(parent::URI_GET_HEROES) as $hero) {
-                $this->heroCollection->addHero($heroTransformer->transform($hero));
+                $this->heroes->addHero($heroTransformer->transform($hero));
             }
         }
 
-        return $this->heroCollection;
+        return $this->heroes;
     }
 
-    public function getHeroMatchups(int $heroId): HeroMatchupCollection
+    /**
+     * @param int $heroId
+     * @return HeroMatchUpCollection
+     * @throws EndpointNotAvailableException
+     * @throws TooManyHeroesException
+     */
+    public function getHeroMatchUps(int $heroId): HeroMatchUpCollection
     {
-        $heroMatchupCollection = new HeroMatchupCollection($this->getHeroes()->getHeroById($heroId));
-        $heroMatchupTransformer = new HeroMatchupTransformer($this->getHeroes(), $heroId);
+        $heroMatchUpCollection = new HeroMatchUpCollection($this->getHeroes()->getHeroById($heroId));
+        $heroMatchUpTransformer = new HeroMatchupTransformer($this->getHeroes(), $heroId);
 
         foreach ($this->doRequest(parent::URI_GET_HERO_MATCHUPS, $heroId) as $heroMatchup) {
-            $heroMatchupCollection->addHeroMatchup($heroMatchupTransformer->transform($heroMatchup));
+            $heroMatchUpCollection->addHeroMatchUp($heroMatchUpTransformer->transform($heroMatchup));
         }
 
-        return $heroMatchupCollection;
+        return $heroMatchUpCollection;
     }
 }

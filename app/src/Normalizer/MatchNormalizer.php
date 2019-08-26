@@ -2,7 +2,6 @@
 namespace App\Normalizer;
 
 use App\Entity\Match;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MatchNormalizer implements NormalizerInterface
@@ -15,13 +14,11 @@ class MatchNormalizer implements NormalizerInterface
     /**
      * @param PlayerNormalizer $playerNormalizer
      * @param HeroCollectionNormalizer $heroCollectionNormalizer
-     * @param DateTimeNormalizer $dateTimeNormalizer
      */
-    public function __construct(PlayerNormalizer $playerNormalizer, HeroCollectionNormalizer $heroCollectionNormalizer, DateTimeNormalizer $dateTimeNormalizer)
+    public function __construct(PlayerNormalizer $playerNormalizer, HeroCollectionNormalizer $heroCollectionNormalizer)
     {
         $this->playerNormalizer = $playerNormalizer;
         $this->heroCollectionNormalizer = $heroCollectionNormalizer;
-        $this->dateTimeNormalizer = $dateTimeNormalizer;
     }
     
     /**
@@ -37,7 +34,7 @@ class MatchNormalizer implements NormalizerInterface
             'player' => $this->playerNormalizer->normalize($object->getPlayer()),
             'playerPosition' => $object->getPlayerPosition(),
             'playerTeamHeroes' => $this->heroCollectionNormalizer->normalize($object->getPlayerTeamHeroes()),
-            'startTime' => $this->dateTimeNormalizer->normalize($object->getStartTime())
+            'startTime' => $object->getStartTime()
         ];
     }
 

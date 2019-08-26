@@ -7,7 +7,7 @@ use App\Entity\PlayerHero;
 use DateTime;
 use stdClass;
 
-class PlayerHeroTransformer implements OpenDotaObjectTransformer
+class PlayerHeroTransformer extends OpenDotaObjectTransformer
 {
     
     private $player;

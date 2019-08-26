@@ -4,11 +4,18 @@ namespace App\Entity;
 use App\Entity\FileWritable;
 use App\Exception\TooManyHeroesException;
 
+/**
+ * @MongoDB\Document
+ */
 class HeroCollection implements FileWritable
 {
 
     const MAX_HEROES = 0;
     
+    /**
+     * @ReferenceMany(targetDocument="Hero")
+     * @var array
+     */
     private $heroes = [];
 
     public function __construct(array $heroes = [])
@@ -47,7 +54,7 @@ class HeroCollection implements FileWritable
         return null;
     }
 
-    public function hasHero(HeroHero $hero)
+    public function hasHero(Hero $hero)
     {
         return in_array($hero, $this->heroes);
     }

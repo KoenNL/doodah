@@ -29,9 +29,22 @@
 </template>
 
 <script scope>
+    const axios = require('axios');
+
     export default {
         title: 'Predictor',
         data() {
+            return {
+                heroes: []
+            }
+        },
+        methods: {
+            getHereoes() {
+                axios.get('/api/heroes')
+                        .then(response => {
+                            this.heroes = response.data;
+                        });
+            }
         }
     }
 </script>

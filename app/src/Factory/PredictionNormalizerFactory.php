@@ -10,7 +10,6 @@ use App\Normalizer\PredictionCollectionNormalizer;
 use App\Normalizer\PredictionMethodNormalizer;
 use App\Normalizer\PredictionNormalizer;
 use App\Normalizer\SteamIdNormalizer;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class PredictionNormalizerFactory
 {
@@ -29,8 +28,7 @@ class PredictionNormalizerFactory
                 ),
                 new HeroCollectionNormalizer(
                     new HeroNormalizer()
-                ),
-                new DateTimeNormalizer()
+                )
             ),
             new PredictionMethodNormalizer()
         );

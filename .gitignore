@@ -7,5 +7,6 @@
 /app/public/*.js
 /app/public/*.json
 /nbproject/
-/logs/*
+/logs/
 /vue/node_modules
+/.idea/

@@ -1,9 +1,7 @@
 <?php
 namespace App\Entity;
 
-use App\Entity\Hero;
-
-class HeroMatchup
+class HeroMatchUp
 {
 
     private $primaryHero;

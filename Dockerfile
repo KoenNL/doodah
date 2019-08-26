@@ -8,7 +8,7 @@ RUN yarn install
 # ---
 
 FROM vue-setup as vue-build
-RUN yarn build
+##RUN yarn build
 
 FROM php:7.1.20-apache as app
 WORKDIR /var/www/app
@@ -21,7 +21,8 @@ RUN apt-get -y install --fix-missing apt-utils build-essential git curl libcurl3
 
 # Other PHP7 Extensions
 RUN apt-get -y install libmcrypt-dev mysql-client zlib1g-dev libicu-dev
-RUN docker-php-ext-install mcrypt pdo_mysql mysqli curl tokenizer json zip intl mbstring
+RUN docker-php-ext-install mcrypt curl tokenizer json zip intl mbstring
+RUN pecl install mongodb
 
 # Enable apache modules
 RUN a2enmod rewrite headers

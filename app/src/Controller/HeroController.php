@@ -4,29 +4,32 @@ namespace App\Controller;
 use App\Normalizer\HeroCollectionNormalizer;
 use App\Normalizer\HeroNormalizer;
 use App\Normalizer\HeroRoleNormalizer;
-use App\Service\HeroCollectionService;
 use App\Service\HeroService;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Serializer;
 
 class HeroController extends AbstractController
 {
 
     /**
-     * @Route("api/hero/list", name="getHeroes")
+     * @Route("api/heroes", name="getHeroes")
+     * @param HeroService $heroService
+     * @return JsonResponse
      */
-    public function getHeroes(HeroCollectionService $heroCollectionService, HeroService $heroService)
+    public function getHeroes(HeroService $heroService)
     {
-        $heroCollection = $heroCollectionService->load();
-
-        if (empty($heroCollection)) {
-            $heroCollectionService->refreshHeroCollection($heroService);
+        try {
+            $heroCollection = $heroService->getHeroes();
+        } catch (Exception $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        $serializer = new \Symfony\Component\Serializer(
+        $serializer = new Serializer(
             [
             new HeroCollectionNormalizer(
                 new HeroNormalizer(
@@ -35,7 +38,7 @@ class HeroController extends AbstractController
             )
             ], [new JsonEncoder()]
         );
-
-        return new JsonResponse($serializer->serialze($heroCollection), Response::HTTP_OK, [], true);
+        
+        return new JsonResponse($serializer->serialize($heroCollection, 'json'), Response::HTTP_OK, [], true);
     }
 }

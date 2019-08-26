@@ -5,7 +5,6 @@ import VueSession from 'vue-session'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-Vue.config.productionTip = false;
 Vue.use(VueSession, {persist: true});
 
 new Vue({

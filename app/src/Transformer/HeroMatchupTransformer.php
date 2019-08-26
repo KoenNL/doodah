@@ -2,10 +2,10 @@
 namespace App\Transformer;
 
 use App\Entity\HeroCollection;
-use App\Entity\HeroMatchup;
+use App\Entity\HeroMatchUp;
 use stdClass;
 
-class HeroMatchupTransformer implements OpenDotaObjectTransformer
+class HeroMatchupTransformer extends OpenDotaObjectTransformer
 {
 
     private $heroCollection;
@@ -19,7 +19,7 @@ class HeroMatchupTransformer implements OpenDotaObjectTransformer
 
     public function transform(stdClass $jsonObject)
     {
-        return new HeroMatchup(
+        return new HeroMatchUp(
             $this->heroCollection->getHeroById($this->primaryHeroId), 
             $this->heroCollection->getHeroById((int) $jsonObject->hero_id), 
             (int) $jsonObject->games_played, 

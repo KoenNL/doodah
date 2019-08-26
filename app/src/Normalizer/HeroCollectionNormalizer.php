@@ -17,11 +17,12 @@ class HeroCollectionNormalizer implements NormalizerInterface
         $this->heroNormalizer = $heroNormalizer;
     }
 
-    
+
     /**
      * @param HeroCollection $object
-     * @param type $format
+     * @param string $format
      * @param array $context
+     * @return array
      */
     public function normalize($object, $format = null, array $context = array())
     {
@@ -38,7 +39,7 @@ class HeroCollectionNormalizer implements NormalizerInterface
 
     /**
      * @param HeroCollection $data
-     * @param type $format
+     * @param string $format
      * @return bool
      */
     public function supportsNormalization($data, $format = null): bool
