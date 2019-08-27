@@ -13,12 +13,12 @@ class Prediction
         $this->hero = $hero;
     }
     
-    function getPosition()
+    function getPosition(): int
     {
         return $this->position;
     }
 
-    function getHero()
+    function getHero(): Hero
     {
         return $this->hero;
     }

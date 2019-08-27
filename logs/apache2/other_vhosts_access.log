@@ -1,4 +1,0 @@
-172.20.0.2:80 172.20.0.1 - - [04/Aug/2019:12:09:45 +0000] "GET / HTTP/1.1" 403 508 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-172.20.0.2:80 172.20.0.1 - - [04/Aug/2019:12:09:45 +0000] "GET /favicon.ico HTTP/1.1" 404 507 "http://doodah.localhost/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"
-172.20.0.2:80 172.20.0.1 - - [04/Aug/2019:12:10:37 +0000] "-" 408 0 "-" "-"
-172.20.0.2:80 172.20.0.1 - - [04/Aug/2019:12:12:20 +0000] "GET / HTTP/1.1" 403 508 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36"

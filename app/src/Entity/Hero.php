@@ -1,8 +1,7 @@
 <?php
 namespace App\Entity;
 
-use App\Entity\HeroAttribute;
-use App\Entity\HeroRoleCollection;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
 
 /**
  * @MongoDB\Document

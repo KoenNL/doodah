@@ -1,8 +1,7 @@
 <?php
 namespace App\Entity;
 
-use App\Entity\Match;
-use App\Entity\Prediction;
+use App\Exception\PositionOccupiedException;
 use App\PredictionMethod\PredictionMethod;
 
 class PredictionCollection
@@ -11,11 +10,12 @@ class PredictionCollection
     private $predictionMethod;
     private $match;
     private $predictions = [];
-    
+
     /**
      * @param PredictionMethod $predictionMethod
      * @param Match $match
      * @param array $predictions
+     * @throws PositionOccupiedException
      */
     function __construct(PredictionMethod $predictionMethod, Match $match, array $predictions = [])
     {
@@ -31,12 +31,12 @@ class PredictionCollection
      * Add a prediction to the collection. By default sets it at the given position if available.
      * @param Prediction $prediction
      * @param bool $respectPosition
-     * @throws OccupiedPositionException
+     * @throws PositionOccupiedException
      */
     public function addPrediction(Prediction $prediction, bool $respectPosition = true)
     {
         if (!empty($this->predictions[$prediction->getPosition()]) && $respectPosition) {
-            throw new OccupiedPositionException($prediction->getPosition());
+            throw new PositionOccupiedException($prediction->getPosition());
         } elseif ($respectPosition) {
             $this->predictions[$prediction->getPosition()] = $prediction;
         } else {
@@ -85,7 +85,7 @@ class PredictionCollection
     /**
      * 
      * @param Hero $hero
-     * @return \self
+     * @return self
      */
     public function removePredictionByHero(Hero $hero): self
     {
@@ -97,9 +97,10 @@ class PredictionCollection
         
         return $this;
     }
-    
+
     /**
      * Sort this collection of predictions.
+     * @throws PositionOccupiedException
      */
     public function sort()
     {

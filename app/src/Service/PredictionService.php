@@ -1,7 +1,6 @@
 <?php
 namespace App\Service;
 
-use App\Entity\HeroCollection;
 use App\Entity\Match;
 use App\Entity\PredictionCollection;
 use App\PredictionMethod\PredictionMethod;
@@ -18,16 +17,18 @@ class PredictionService
         $this->predictionMethod = $predictionMethod;
     }
     
-    public function predict(): HeroCollection
+    public function predict(): PredictionCollection
     {
-        return $this->predictionMethod->predict();
+        return $this->predictionMethod->predict($this->match);
     }
     
-    public function removeBannedHeroesFromPrediction(PredictionCollection $predicionCollection): PredictionCollection
+    public function removeBannedHeroesFromPrediction(PredictionCollection $predictionCollection): PredictionCollection
     {
         foreach ($this->match->getBannedHeroes()->getHeroes() as $bannedHero) {
-            $predicionCollection->removeHero($bannedHero);
+            $predictionCollection->removePredictionByHero($bannedHero);
         }
+
+        return $predictionCollection;
     }
 
 }

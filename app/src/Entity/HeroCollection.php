@@ -1,23 +1,27 @@
 <?php
 namespace App\Entity;
 
-use App\Entity\FileWritable;
 use App\Exception\TooManyHeroesException;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceMany;
 
 /**
  * @MongoDB\Document
  */
-class HeroCollection implements FileWritable
+class HeroCollection
 {
 
     const MAX_HEROES = 0;
-    
+
     /**
      * @ReferenceMany(targetDocument="Hero")
      * @var array
      */
     private $heroes = [];
 
+    /**
+     * @param array $heroes
+     * @throws TooManyHeroesException
+     */
     public function __construct(array $heroes = [])
     {
         foreach ($heroes as $hero) {
@@ -25,7 +29,12 @@ class HeroCollection implements FileWritable
         }
     }
 
-    public function addHero(Hero $hero)
+    /**
+     * @param Hero $hero
+     * @return $this
+     * @throws TooManyHeroesException
+     */
+    public function addHero(Hero $hero): self
     {
         if (self::MAX_HEROES > 0 && count($this->heroes) === self::MAX_HEROES) {
             throw new TooManyHeroesException(self::MAX_HEROES);
@@ -54,7 +63,7 @@ class HeroCollection implements FileWritable
         return null;
     }
 
-    public function hasHero(Hero $hero)
+    public function hasHero(Hero $hero): bool
     {
         return in_array($hero, $this->heroes);
     }
