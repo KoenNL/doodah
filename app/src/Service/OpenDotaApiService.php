@@ -5,6 +5,10 @@ use App\Exception\EndpointNotAvailableException;
 use \App\Transformer\OpenDotaObjectTransformer;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 abstract class OpenDotaApiService
 {
@@ -29,7 +33,18 @@ abstract class OpenDotaApiService
         $this->connection = HttpClient::create();
         $this->transformer = $transformer;
     }
-    
+
+    /**
+     * @param string $endpoint
+     * @param string|null $inlineParameter
+     * @param array $parameters
+     * @return array
+     * @throws EndpointNotAvailableException
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     */
     protected function doRequest(string $endpoint, string $inlineParameter = null, array $parameters = []): array
     {
         if (!$this->endpointAvailable($endpoint)) {
@@ -39,7 +54,7 @@ abstract class OpenDotaApiService
         $response = $this->connection->request('GET', $this->formatUrl($endpoint, $inlineParameter), $parameters);
 
         if ($response->getStatusCode() === Response::HTTP_OK && json_decode($response->getContent())) {
-            return json_decode($response->getContent());
+            return $this->transformer->transform(json_decode($response->getContent()));
         }
 
         return null;

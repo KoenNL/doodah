@@ -5,35 +5,57 @@ use App\Entity\HeroCollection;
 use App\Entity\HeroMatchUpCollection;
 use App\Exception\EndpointNotAvailableException;
 use App\Exception\TooManyHeroesException;
+use App\Repository\HeroCollectionRepository;
 use App\Transformer\HeroMatchupTransformer;
 use App\Transformer\HeroTransformer;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class HeroService extends OpenDotaApiService
 {
 
-    private $heroes;
+    private $heroCollection;
+    private $documentManager;
 
-    public function __construct(HeroTransformer $transformer)
+    /**
+     * @param DocumentManager $documentManager
+     * @param HeroTransformer $transformer
+     */
+    public function __construct(DocumentManager $documentManager, HeroTransformer $transformer)
     {
         parent::__construct($transformer);
+        $this->documentManager = $documentManager;
     }
 
     /**
      * @return HeroCollection
      * @throws EndpointNotAvailableException
      * @throws TooManyHeroesException
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function getHeroes(): HeroCollection
     {
-        if (empty($this->heroes)) {
-            $this->heroes = new HeroCollection();
-            $heroTransformer = new HeroTransformer();
+        /** @var HeroCollectionRepository $repository */
+        $repository = $this->documentManager->getRepository(HeroCollection::class);
+        $this->heroCollection = $repository->findMain();
+
+        if (empty($this->heroCollection)) {
+            $this->heroCollection = new HeroCollection();
             foreach ($this->doRequest(parent::URI_GET_HEROES) as $hero) {
-                $this->heroes->addHero($heroTransformer->transform($hero));
+                $this->heroCollection->addHero($hero);
             }
+
+            $this->documentManager->persist($this->heroCollection);
+            $this->documentManager->flush();
         }
 
-        return $this->heroes;
+        return $this->heroCollection;
     }
 
     /**
@@ -52,5 +74,10 @@ class HeroService extends OpenDotaApiService
         }
 
         return $heroMatchUpCollection;
+    }
+
+    private function getSavedHeroCollection()
+    {
+
     }
 }
