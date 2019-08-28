@@ -1,7 +1,7 @@
 <?php
 namespace App\Helper;
 
-use App\Entity\HeroCollection;
+use App\Document\HeroCollection;
 
 class HeroCollectionHelper
 {

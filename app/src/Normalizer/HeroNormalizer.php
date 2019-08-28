@@ -1,7 +1,7 @@
 <?php
 namespace App\Normalizer;
 
-use App\Entity\Hero;
+use App\Document\Hero;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class HeroNormalizer implements NormalizerInterface

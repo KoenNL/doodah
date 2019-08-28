@@ -1,7 +1,7 @@
 <?php
 namespace App\Normalizer;
 
-use App\Entity\Match;
+use App\Document\Match;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MatchNormalizer implements NormalizerInterface

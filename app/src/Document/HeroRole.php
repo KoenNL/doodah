@@ -1,12 +1,19 @@
 <?php
 
-namespace App\Entity;
+namespace App\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * @MongoDB\Document
  */
 class HeroRole {
-    
+
+    /**
+     * @MongoDB\Id
+     * @var int
+     */
+    private $id;
     /**
      * @MongoDB\Field(type="string")
      * @var string
@@ -20,7 +27,15 @@ class HeroRole {
     {
         $this->name = $name;
     }
-    
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
     /**
      * @return string
      */

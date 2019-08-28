@@ -1,5 +1,5 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
 use App\Exception\PositionOccupiedException;
 use App\PredictionMethod\PredictionMethod;

@@ -1,8 +1,8 @@
 <?php
 namespace App\PredictionMethod;
 
-use App\Entity\Match;
-use App\Entity\PredictionCollection;
+use App\Document\Match;
+use App\Document\PredictionCollection;
 use App\PredictionMethod\PredictionMethod;
 use App\Service\PlayerService;
 

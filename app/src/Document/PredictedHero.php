@@ -1,7 +1,7 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
-use App\Entity\Hero;
+use App\Document\Hero;
 
 class PredictedHero extends Hero
 {

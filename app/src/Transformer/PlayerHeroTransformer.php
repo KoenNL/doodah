@@ -1,9 +1,9 @@
 <?php
 namespace App\Transformer;
 
-use App\Entity\HeroCollection;
-use App\Entity\Player;
-use App\Entity\PlayerHero;
+use App\Document\HeroCollection;
+use App\Document\Player;
+use App\Document\PlayerHero;
 use DateTime;
 use stdClass;
 

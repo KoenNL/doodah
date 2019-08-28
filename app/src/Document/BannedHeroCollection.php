@@ -1,7 +1,7 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
-use App\Entity\HeroCollection;
+use App\Document\HeroCollection;
 
 class BannedHeroCollection extends HeroCollection
 {

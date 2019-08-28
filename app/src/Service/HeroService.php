@@ -1,8 +1,8 @@
 <?php
 namespace App\Service;
 
-use App\Entity\HeroCollection;
-use App\Entity\HeroMatchUpCollection;
+use App\Document\HeroCollection;
+use App\Document\HeroMatchUpCollection;
 use App\Exception\EndpointNotAvailableException;
 use App\Exception\TooManyHeroesException;
 use App\Repository\HeroCollectionRepository;
@@ -43,7 +43,7 @@ class HeroService extends OpenDotaApiService
     {
         /** @var HeroCollectionRepository $repository */
         $repository = $this->documentManager->getRepository(HeroCollection::class);
-        $this->heroCollection = $repository->findMain();
+        $this->heroCollection = $repository->findOneBy([]);
 
         if (empty($this->heroCollection)) {
             $this->heroCollection = new HeroCollection();

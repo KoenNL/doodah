@@ -1,7 +1,7 @@
 <?php
 namespace App\Normalizer;
 
-use App\Entity\HeroCollection;
+use App\Document\HeroCollection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class HeroCollectionNormalizer implements NormalizerInterface

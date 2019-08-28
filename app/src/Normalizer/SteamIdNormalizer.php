@@ -1,7 +1,7 @@
 <?php
 namespace App\Normalizer;
 
-use App\Entity\SteamId;
+use App\Document\SteamId;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class SteamIdNormalizer implements NormalizerInterface

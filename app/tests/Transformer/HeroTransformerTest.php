@@ -1,10 +1,10 @@
 <?php
 namespace tests\Transformer;
 
-use App\Entity\Hero;
-use App\Entity\HeroAttribute;
-use App\Entity\HeroRole;
-use App\Entity\HeroRoleCollection;
+use App\Document\Hero;
+use App\Document\HeroAttribute;
+use App\Document\HeroRole;
+use App\Document\HeroRoleCollection;
 use App\Transformer\HeroTransformer;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 

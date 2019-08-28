@@ -1,7 +1,7 @@
 <?php
 namespace App\Normalizer;
 
-use App\Entity\Player;
+use App\Document\Player;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PlayerNormalizer implements NormalizerInterface

@@ -18,6 +18,9 @@ services:
       container_name: 'doodah-mongo'
       volumes:
           - mongodb:/data/db
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: admin
+        MONGO_INITDB_ROOT_PASSWORD: admin
   vue-builder:
     build:
       context: .

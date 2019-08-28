@@ -1,7 +1,7 @@
 <?php
 namespace App\Transformer;
 
-use App\Entity\HeroCollection;
+use App\Document\HeroCollection;
 
 class HeroCollectionTransformer
 {

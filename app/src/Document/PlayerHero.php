@@ -1,9 +1,9 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
-use App\Entity\Hero;
-use App\Entity\HeroAttribute;
-use App\Entity\HeroRoleCollection;
+use App\Document\Hero;
+use App\Document\HeroAttribute;
+use App\Document\HeroRoleCollection;
 use DateTime;
 
 class PlayerHero extends Hero

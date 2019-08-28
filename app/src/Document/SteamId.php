@@ -1,5 +1,5 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
 use App\Exception\InvalidSteamIdException;
 use App\Helper\SteamIdHelper;

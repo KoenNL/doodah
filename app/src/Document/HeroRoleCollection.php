@@ -1,22 +1,37 @@
 <?php
 
-namespace App\Entity;
+namespace App\Document;
 
-use App\Entity\HeroRole;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceMany;
 
 /**
  * @MongoDB\Document
  */
 class HeroRoleCollection {
-    
+
     /**
-     * @ReferenceMany(targetDocument="HeroRole")
+     * @MongoDB\Id
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @ReferenceMany(targetDocument="HeroRole", cascade={"persist"})
      * @var array
      */
     private $roles = [];
     
     public function __construct(array $roles = []) {
         $this->roles = $roles;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function addRole(HeroRole $role) {

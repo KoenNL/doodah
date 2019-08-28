@@ -1,7 +1,7 @@
 <?php
 namespace App\Normalizer;
 
-use App\Entity\Prediction;
+use App\Document\Prediction;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PredictionNormalizer implements NormalizerInterface

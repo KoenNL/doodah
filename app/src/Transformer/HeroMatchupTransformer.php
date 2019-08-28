@@ -1,8 +1,8 @@
 <?php
 namespace App\Transformer;
 
-use App\Entity\HeroCollection;
-use App\Entity\HeroMatchUp;
+use App\Document\HeroCollection;
+use App\Document\HeroMatchUp;
 use stdClass;
 
 class HeroMatchupTransformer extends OpenDotaObjectTransformer

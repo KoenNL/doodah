@@ -1,7 +1,8 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceOne;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * @MongoDB\Document
@@ -10,7 +11,7 @@ class Hero
 {
 
     /**
-     * @MongoDB\Id
+     * @MongoDB\Id(strategy="NONE")
      * @var int
      */
     private $id;
@@ -25,7 +26,7 @@ class Hero
      */
     private $localizedName;
     /**
-     * @ReferenceOne(targetDocument="HeroAttribute")
+     * @ReferenceOne(targetDocument="HeroAttribute", cascade={"persist"})
      * @var HeroAttribute
      */
     private $primaryAttribute;
@@ -35,7 +36,7 @@ class Hero
      */
     private $attackType;
     /**
-     * @ReferenceOne(targetDocument="HeroRoleCollection")
+     * @ReferenceOne(targetDocument="HeroRoleCollection", cascade={"persist"})
      * @var HeroRoleCollection
      */
     private $roles = [];

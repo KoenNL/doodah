@@ -1,7 +1,7 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
-use App\Entity\SteamId;
+use App\Document\SteamId;
 
 class Player
 {

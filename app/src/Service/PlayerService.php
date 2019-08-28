@@ -1,10 +1,10 @@
 <?php
 namespace App\Service;
 
-use App\Entity\HeroCollection;
-use App\Entity\Match;
-use App\Entity\Player;
-use App\Entity\PlayerHeroCollection;
+use App\Document\HeroCollection;
+use App\Document\Match;
+use App\Document\Player;
+use App\Document\PlayerHeroCollection;
 use App\Service\OpenDotaApiService;
 use App\Transformer\HeroCollectionTransformer;
 use App\Transformer\PlayerHeroTransformer;

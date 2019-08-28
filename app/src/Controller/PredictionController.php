@@ -1,11 +1,11 @@
 <?php
 namespace App\Controller;
 
-use App\Entity\BannedHeroCollection;
-use App\Entity\Match;
-use App\Entity\Player;
-use App\Entity\SteamId;
-use App\Entity\TeamHeroCollection;
+use App\Document\BannedHeroCollection;
+use App\Document\Match;
+use App\Document\Player;
+use App\Document\SteamId;
+use App\Document\TeamHeroCollection;
 use App\Exception\InvalidSteamIdException;
 use App\Exception\TooManyHeroesException;
 use App\Factory\PredictionNormalizerFactory;

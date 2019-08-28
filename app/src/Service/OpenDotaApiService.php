@@ -54,7 +54,7 @@ abstract class OpenDotaApiService
         $response = $this->connection->request('GET', $this->formatUrl($endpoint, $inlineParameter), $parameters);
 
         if ($response->getStatusCode() === Response::HTTP_OK && json_decode($response->getContent())) {
-            return $this->transformer->transform(json_decode($response->getContent()));
+            return $this->transformer->transformAll(json_decode($response->getContent()));
         }
 
         return null;

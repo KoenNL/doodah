@@ -1,19 +1,27 @@
 <?php
-namespace App\Entity;
+namespace App\Document;
 
 use App\Exception\TooManyHeroesException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceMany;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * @MongoDB\Document
  */
-class HeroCollection
+class HeroCollection extends ArrayCollection
 {
 
     const MAX_HEROES = 0;
 
     /**
-     * @ReferenceMany(targetDocument="Hero")
+     * @MongoDB\Id
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @ReferenceMany(targetDocument="Hero", cascade={"persist"})
      * @var array
      */
     private $heroes = [];
@@ -24,14 +32,24 @@ class HeroCollection
      */
     public function __construct(array $heroes = [])
     {
+        parent::__construct();
+
         foreach ($heroes as $hero) {
             $this->addHero($hero);
         }
     }
 
     /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
      * @param Hero $hero
-     * @return $this
+     * @return HeroCollection
      * @throws TooManyHeroesException
      */
     public function addHero(Hero $hero): self
