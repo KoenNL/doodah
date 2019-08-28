@@ -6,9 +6,11 @@ services:
       context: .
       target: development
     container_name: 'doodah-webserver'
+    expose:
+      - '9000'
     ports:
         - '80:80'
-    volumes: 
+    volumes:
       - ${DOCUMENT_ROOT-./app}:/var/www/app
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
   mongodb:
