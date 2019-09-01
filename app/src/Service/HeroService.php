@@ -34,10 +34,6 @@ class HeroService extends OpenDotaApiService
      * @return HeroCollection
      * @throws EndpointNotAvailableException
      * @throws TooManyHeroesException
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
     public function getHeroes(): HeroCollection
     {
@@ -47,12 +43,15 @@ class HeroService extends OpenDotaApiService
 
         if (empty($this->heroCollection)) {
             $this->heroCollection = new HeroCollection();
-            foreach ($this->doRequest(parent::URI_GET_HEROES) as $hero) {
-                $this->heroCollection->addHero($hero);
-            }
+            $response = $this->doRequest(parent::URI_GET_HEROES);
+            if ($response->isSuccess()) {
+                foreach ($response->getResults() as $hero) {
+                    $this->heroCollection->addHero($hero);
+                }
 
-            $this->documentManager->persist($this->heroCollection);
-            $this->documentManager->flush();
+                $this->documentManager->persist($this->heroCollection);
+                $this->documentManager->flush();
+            }
         }
 
         return $this->heroCollection;

@@ -33,8 +33,6 @@ class PredictionController extends AbstractController
      * @param Request $request
      * @param HeroService $heroService
      * @return JsonResponse
-     *
-     * @throws InvalidSteamIdException
      */
     public function predictAction(Request $request, HeroService $heroService)
     {
@@ -55,6 +53,8 @@ class PredictionController extends AbstractController
             );
         } catch (TooManyHeroesException $exception) {
             return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+        } catch (InvalidSteamIdException $exception) {
+            return new JsonResponse(['message' => 'Invalid Steam id'], Response::HTTP_BAD_REQUEST);
         }
 
         $predictionService = new PredictionService(

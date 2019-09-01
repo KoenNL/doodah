@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use App\Document\OpenDotaApiResponse;
 use App\Exception\EndpointNotAvailableException;
 use \App\Transformer\OpenDotaObjectTransformer;
 use Symfony\Component\HttpClient\HttpClient;
@@ -38,26 +39,35 @@ abstract class OpenDotaApiService
      * @param string $endpoint
      * @param string|null $inlineParameter
      * @param array $parameters
-     * @return array
+     * @return OpenDotaApiResponse
      * @throws EndpointNotAvailableException
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
      */
-    protected function doRequest(string $endpoint, string $inlineParameter = null, array $parameters = []): array
+    protected function doRequest(string $endpoint, string $inlineParameter = null, array $parameters = []): OpenDotaApiResponse
     {
         if (!$this->endpointAvailable($endpoint)) {
             throw new EndpointNotAvailableException('Endpoint "' . $endpoint . '" is not available at this point.');
         }
 
-        $response = $this->connection->request('GET', $this->formatUrl($endpoint, $inlineParameter), $parameters);
+        $openDotaApiResponse = new OpenDotaApiResponse($endpoint);
 
-        if ($response->getStatusCode() === Response::HTTP_OK && json_decode($response->getContent())) {
-            return $this->transformer->transformAll(json_decode($response->getContent()));
+        try {
+            $response = $this->connection->request('GET', $this->formatUrl($endpoint, $inlineParameter), $parameters);
+
+            if ($response->getStatusCode() === Response::HTTP_OK && json_decode($response->getContent())) {
+                $openDotaApiResponse->setSuccess(true);
+                $openDotaApiResponse->setResults($this->transformer->transformAll(json_decode($response->getContent())));
+            }
+        } catch (ClientExceptionInterface $exception) {
+            $openDotaApiResponse->setException($exception);
+        } catch (RedirectionExceptionInterface $exception) {
+            $openDotaApiResponse->setException($exception);
+        } catch (ServerExceptionInterface $exception) {
+            $openDotaApiResponse->setException($exception);
+        } catch (TransportExceptionInterface $exception) {
+            $openDotaApiResponse->setException($exception);
         }
 
-        return null;
+        return $openDotaApiResponse;
     }
 
     public function endpointAvailable(string $endpoint)
