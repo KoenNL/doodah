@@ -10,6 +10,9 @@ services:
       - '9000'
     ports:
         - '80:80'
+    environment:
+      MONGODB_URL: "mongodb://admin:admin@mongodb:27017"
+      MONGODB_DB: "doodah"
     volumes:
       - ${DOCUMENT_ROOT-./app}:/var/www/app
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
@@ -19,8 +22,9 @@ services:
       volumes:
           - mongodb:/data/db
       environment:
-        MONGO_INITDB_ROOT_USERNAME: admin
-        MONGO_INITDB_ROOT_PASSWORD: admin
+        MONGO_INITDB_ROOT_USERNAME: "admin"
+        MONGO_INITDB_ROOT_PASSWORD: "admin"
+        MONGO_INITDB_DATABASE: "doodah"
   vue-builder:
     build:
       context: .
