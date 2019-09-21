@@ -11,6 +11,10 @@ class SteamId
     private $id64;
     private $id32;
 
+    /**
+     * @param string $url
+     * @throws InvalidSteamIdException
+     */
     function __construct(string $url)
     {
         if (!SteamIdHelper::validateUrl($url)) {
@@ -28,7 +32,7 @@ class SteamId
     function getId64(): int
     {
         if (empty($this->id64)) {
-            $this->id64 = SteamIdHelper::stripIdFromUrl($this->url);
+            $this->id64 = SteamIdHelper::to64Bit($this->url);
         }
         
         return $this->id64;

@@ -6,6 +6,7 @@ use App\Document\Match;
 use App\Document\Player;
 use App\Document\SteamId;
 use App\Document\TeamHeroCollection;
+use App\Exception\InvalidHeroIdException;
 use App\Exception\InvalidSteamIdException;
 use App\Exception\TooManyHeroesException;
 use App\Factory\PredictionNormalizerFactory;
@@ -14,6 +15,7 @@ use App\PredictionMethod\OwnResultsPredictionMethod;
 use App\Service\HeroService;
 use App\Service\PlayerService;
 use App\Service\PredictionService;
+use App\Transformer\PlayerHeroTransformer;
 use DateTime;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +30,7 @@ class PredictionController extends AbstractController
 {
 
     /**
-     * @Route("api/prediction", name="predict", methods="PUT")
+     * @Route("api/prediction", name="predict", methods="POST")
      *
      * @param Request $request
      * @param HeroService $heroService
@@ -46,20 +48,28 @@ class PredictionController extends AbstractController
             $match = new Match(
                 new Player(new SteamId($request->get('steamId')), 'player'),
                 (int) $request->get('playerPosition'),
-                new BannedHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('bannedHeroesIds'))->getHeroes()),
-                new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('teamHeroesIds'))->getHeroes()),
-                new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('opposingHeroesIds'))->getHeroes()),
+                new BannedHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('bannedHeroes'))->getHeroes()),
+                new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('teamHeroes'))->getHeroes()),
+                new TeamHeroCollection(HeroCollectionHelper::getHeroesByIds($heroCollection, $request->get('opposingHeroes'))->getHeroes()),
                 new DateTime()
             );
         } catch (TooManyHeroesException $exception) {
-            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_EXPECTATION_FAILED);
         } catch (InvalidSteamIdException $exception) {
-            return new JsonResponse(['message' => 'Invalid Steam id'], Response::HTTP_BAD_REQUEST);
+            return new JsonResponse(['message' => 'Invalid Steam id'], Response::HTTP_EXPECTATION_FAILED);
+        } catch (InvalidHeroIdException $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_EXPECTATION_FAILED);
+        } catch (Exception $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
         $predictionService = new PredictionService(
             $match,
-            new OwnResultsPredictionMethod(new PlayerService($heroCollection))
+            new OwnResultsPredictionMethod(
+                new PlayerService(
+                    new PlayerHeroTransformer($match->getPlayer(), $heroCollection)
+                )
+            )
         );
 
         $predictionCollection = $predictionService->removeBannedHeroesFromPrediction($predictionService->predict());

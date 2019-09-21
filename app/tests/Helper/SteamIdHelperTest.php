@@ -22,17 +22,17 @@ class SteamIdHelperTest extends TestCase
     {
         $validId = 76561198838445931;
 
-        $this->assertEquals($validId, SteamIdHelper::stripIdFromUrl($this->validUrl));
-        $this->assertEquals(null, SteamIdHelper::stripIdFromUrl($this->invalidUrl));
-        $this->assertEquals(null, SteamIdHelper::stripIdFromUrl($this->invalidUrl2));
+        $this->assertEquals($validId, SteamIdHelper::to64Bit($this->validUrl));
+        $this->assertEquals(null, SteamIdHelper::to64Bit($this->invalidUrl));
+        $this->assertEquals(null, SteamIdHelper::to64Bit($this->invalidUrl2));
     }
 
     public function testConvertTo32Bit()
     {
         $validId = 878180203;
         
-        $this->assertEquals($validId, SteamIdHelper::to32Bit(SteamIdHelper::stripIdFromUrl($this->validUrl)));
-        $this->assertEquals(null, SteamIdHelper::to32Bit(SteamIdHelper::stripIdFromUrl($this->invalidUrl)));
-        $this->assertEquals(null, SteamIdHelper::to32Bit(SteamIdHelper::stripIdFromUrl($this->invalidUrl2)));
+        $this->assertEquals($validId, SteamIdHelper::to32Bit(SteamIdHelper::to64Bit($this->validUrl)));
+        $this->assertEquals(null, SteamIdHelper::to32Bit(SteamIdHelper::to64Bit($this->invalidUrl)));
+        $this->assertEquals(null, SteamIdHelper::to32Bit(SteamIdHelper::to64Bit($this->invalidUrl2)));
     }
 }

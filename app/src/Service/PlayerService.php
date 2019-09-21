@@ -1,31 +1,39 @@
 <?php
 namespace App\Service;
 
-use App\Document\HeroCollection;
 use App\Document\Match;
 use App\Document\Player;
 use App\Document\PlayerHeroCollection;
-use App\Service\OpenDotaApiService;
+use App\Exception\EndpointNotAvailableException;
 use App\Transformer\HeroCollectionTransformer;
 use App\Transformer\PlayerHeroTransformer;
 
 class PlayerService extends OpenDotaApiService
 {
-    
-    private $allHeroes;
-    
-    function __construct(HeroCollection $allHeroes)
+
+    function __construct(PlayerHeroTransformer $playerHeroTransformer)
     {
-        $this->allHeroes = $allHeroes;
+        parent::__construct($playerHeroTransformer);
     }
 
+    /**
+     * @param Player $player
+     * @param array $parameters
+     * @return PlayerHeroCollection
+     * @throws EndpointNotAvailableException
+     */
     public function getHeroes(Player $player, array $parameters): PlayerHeroCollection
     {
-        $playerHeroTransformer = new PlayerHeroTransformer($player, $this->allHeroes);
-        
-        return $playerHeroTransformer->transform($this->doRequest(parent::URI_GET_PLAYER_HEROES, $player->getId(), $parameters));
+        $response = $this->doRequest(parent::URI_GET_PLAYER_HEROES, $player->getSteamId()->getId32(), $parameters);
+
+        return $response->isSuccess() ? $response->getResult() : null;
     }
-    
+
+    /**
+     * @param Match $match
+     * @return PlayerHeroCollection
+     * @throws EndpointNotAvailableException
+     */
     public function getFavoriteHeroes(Match $match): PlayerHeroCollection
     {
         $parameters = [

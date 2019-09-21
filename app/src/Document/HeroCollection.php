@@ -28,15 +28,15 @@ class HeroCollection extends ArrayCollection
     private $heroes;
 
     /**
-     * @param Collection $heroes
-     * @throws TooManyHeroesException
+     * @param Collection|null $heroes
      */
-    public function __construct(Collection $heroes)
+    public function __construct(Collection $heroes = null)
     {
         parent::__construct();
-
-        foreach ($heroes as $hero) {
-            $this->addHero($hero);
+        if (empty($heroes)) {
+            $this->heroes = new ArrayCollection();
+        } else {
+            $this->heroes = $heroes;
         }
     }
 
@@ -71,9 +71,10 @@ class HeroCollection extends ArrayCollection
         return $this->heroes;
     }
 
-    public function getHeroById(int $heroId): Hero
+    public function getHeroById(int $heroId): ?Hero
     {
-        foreach ($this->heroes as $hero) {
+        /** @var Hero $hero */
+        foreach ($this->heroes->toArray() as $hero) {
             if ($hero->getId() === $heroId) {
                 return $hero;
             }

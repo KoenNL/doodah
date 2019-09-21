@@ -2,8 +2,10 @@
 namespace App\PredictionMethod;
 
 use App\Document\Match;
+use App\Document\Prediction;
 use App\Document\PredictionCollection;
-use App\PredictionMethod\PredictionMethod;
+use App\Exception\EndpointNotAvailableException;
+use App\Exception\PositionOccupiedException;
 use App\Service\PlayerService;
 
 class OwnResultsPredictionMethod extends PredictionMethod
@@ -16,9 +18,15 @@ class OwnResultsPredictionMethod extends PredictionMethod
         $this->playerService = $playerService;
     }
 
+    /**
+     * @param Match $match
+     * @return PredictionCollection
+     * @throws PositionOccupiedException
+     * @throws EndpointNotAvailableException
+     */
     public function predict(Match $match): PredictionCollection
     {
-        $favoriteHeroCollection = $this->playerService->getFavoriteHeroes($this->match);
+        $favoriteHeroCollection = $this->playerService->getFavoriteHeroes($match);
 
         $predictionCollection = new PredictionCollection($this, $match);
 

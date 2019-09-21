@@ -19,7 +19,7 @@ class SteamIdHelper
         return rtrim($url, '/');
     }
     
-    public static function stripIdFromUrl(string $url): int
+    public static function to64Bit(string $url): int
     {
         if (!self::validateUrl($url)){
             return 0;

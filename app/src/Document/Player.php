@@ -1,8 +1,6 @@
 <?php
 namespace App\Document;
 
-use App\Document\SteamId;
-
 class Player
 {
     
@@ -15,7 +13,7 @@ class Player
         $this->name = $name;
     }
     
-    function getSteamId(): int
+    function getSteamId(): SteamId
     {
         return $this->steamId;
     }
@@ -24,5 +22,4 @@ class Player
     {
         return $this->name;
     }
-
 }
