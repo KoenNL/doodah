@@ -2,6 +2,7 @@
 
 namespace App\Document;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceMany;
 
@@ -18,11 +19,11 @@ class HeroRoleCollection {
 
     /**
      * @ReferenceMany(targetDocument="HeroRole", cascade={"persist"})
-     * @var array
+     * @var Collection
      */
-    private $roles = [];
+    private $roles;
     
-    public function __construct(array $roles = []) {
+    public function __construct(array $roles) {
         $this->roles = $roles;
     }
 
@@ -36,17 +37,17 @@ class HeroRoleCollection {
 
     public function addRole(HeroRole $role) {
         if (!$this->hasRole($role)) {
-            $this->roles[] = $role;
+            $this->roles->add($role);
         }
         
         return $this;
     }
     
-    public function getRoles(): array {
+    public function getRoles(): Collection {
         return $this->roles;
     }
     
     public function hasRole(HeroRole $role) {
-        return in_array($role, $this->roles);
+        return $this->roles->contains($role);
     }
 }

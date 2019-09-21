@@ -28,7 +28,7 @@ class HeroCollectionNormalizer implements NormalizerInterface
     {
         $heroes = [];
         
-        foreach ($object->getHeroes() as $hero) {
+        foreach ($object->getHeroes()->toArray() as $hero) {
             $heroes[] = $this->heroNormalizer->normalize($hero);
         }
         

@@ -39,7 +39,7 @@ class Hero
      * @ReferenceOne(targetDocument="HeroRoleCollection", cascade={"persist"})
      * @var HeroRoleCollection
      */
-    private $roles = [];
+    private $roles;
     /**
      * @MongoDB\Field(type="integer")
      * @var int

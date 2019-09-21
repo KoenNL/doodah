@@ -16,17 +16,18 @@ class HeroNormalizer implements NormalizerInterface
     {
         $this->heroRoleNormalizer = $heroRoleNormalizer;
     }
-    
+
     /**
      * @param Hero $object
-     * @param type $format
+     * @param string $format
      * @param array $context
+     * @return array
      */
     public function normalize($object, $format = null, array $context = array())
     {
         $roles = [];
         
-        foreach ($object->getRoles() as $heroRole) {
+        foreach ($object->getRoles()->getRoles() as $heroRole) {
             $roles[] = $this->heroRoleNormalizer->normalize($heroRole);
         }
         
@@ -43,7 +44,7 @@ class HeroNormalizer implements NormalizerInterface
 
     /**
      * @param Hero $data
-     * @param type $format
+     * @param string $format
      * @return bool
      */
     public function supportsNormalization($data, $format = null): bool

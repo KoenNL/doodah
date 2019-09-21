@@ -3,6 +3,7 @@ namespace App\Document;
 
 use App\Exception\TooManyHeroesException;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\ReferenceMany;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
@@ -21,16 +22,16 @@ class HeroCollection extends ArrayCollection
     private $id;
 
     /**
-     * @ReferenceMany(targetDocument="Hero", cascade={"persist"})
-     * @var array
+     * @ReferenceMany(targetDocument="Hero", cascade="all")
+     * @var Collection
      */
-    private $heroes = [];
+    private $heroes;
 
     /**
-     * @param array $heroes
+     * @param Collection $heroes
      * @throws TooManyHeroesException
      */
-    public function __construct(array $heroes = [])
+    public function __construct(Collection $heroes)
     {
         parent::__construct();
 
@@ -54,18 +55,18 @@ class HeroCollection extends ArrayCollection
      */
     public function addHero(Hero $hero): self
     {
-        if (self::MAX_HEROES > 0 && count($this->heroes) === self::MAX_HEROES) {
+        if (self::MAX_HEROES > 0 && $this->heroes->count() === self::MAX_HEROES) {
             throw new TooManyHeroesException(self::MAX_HEROES);
         }
         
         if (!$this->hasHero($hero)) {
-            $this->heroes[] = $hero;
+            $this->heroes->add($hero);
         }
 
         return $this;
     }
 
-    public function getHeroes(): array
+    public function getHeroes(): Collection
     {
         return $this->heroes;
     }
@@ -83,15 +84,11 @@ class HeroCollection extends ArrayCollection
 
     public function hasHero(Hero $hero): bool
     {
-        return in_array($hero, $this->heroes);
+        return $this->heroes->contains($hero);
     }
     
     protected function removeHero(Hero $heroToBeRemoved)
     {
-        foreach ($this->getHeroes() as $position => $hero) {
-            if ($hero->getId() === $heroToBeRemoved->getId()) {
-                unset($this->heroes[$position]);
-            }
-        }
+        $this->heroes->removeElement($heroToBeRemoved);
     }
 }
